@@ -202,7 +202,4 @@ console.log("Rush order:", order.calculateTotal());
 // Advance status
 order.advanceStatus();
 console.log("Status:", order.status); 
-
-// Cancel order
-order.cancel();
-console.log("Status:", order.status);
+ 

@@ -1,11 +1,7 @@
-/**
- * order-processor.test.js
- * Tests run against both the original (buggy) and fixed OrderProcessor.
- */
+
 const fs = require("fs");
 const path = require("path");
 
-// Load original constructor only (skip the crashing usage example at the bottom)
 function loadOriginal() {
   const code = fs.readFileSync(path.join(__dirname, "order-processor.js"), "utf8");
   const cutoff = code.search(/\/\*[\r\n]+\s*Usage example/);
@@ -24,8 +20,6 @@ function order(...items) {
   items.forEach(i => o.addLineItem(i));
   return o;
 }
-
-// ── Bug Proofs ────────────────────────────────────────────────────────────────
 
 test("Bug 1 ORIGINAL: getTotalItemCount crashes with TypeError", () => {
   const o = new Original();

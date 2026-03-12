@@ -68,7 +68,6 @@ Script: `tests/ajax-dynamic-content.spec.js`
 ### TC-AJAX-03
 
 | Field | Detail |
-|---|---|
 | **Test Case ID** | TC-AJAX-03 |
 | **Description** | Verify the AJAX response arrives within the expected time window (14–20 seconds). |
 | **Preconditions** | Normal network conditions. |
@@ -212,3 +211,89 @@ Script: `tests/sample-app-login.spec.js`
 3. Type `wrongpass` into the password field.
 4. Click `#login`.
 5. Assert `#loginstatus` shows `Invalid username/password`.
+
+---
+
+## Scenario C — Tricky Selectors
+
+Pages:
+- http://uitestingplayground.com/dynamicid
+- http://uitestingplayground.com/overlapped
+
+Script: `tests/tricky-selectors.spec.js` *(automation not yet created)*
+
+**Key challenge:** The Dynamic ID page has a button whose `id` attribute is a random GUID that changes on every page load — it cannot be targeted by ID. The Overlapped page has an input field that is hidden inside a scrollable container and must be scrolled into view before it can be interacted with.
+
+---
+
+### TC-TRICKY-01
+
+| Field | Detail |
+| **Test Case ID** | TC-TRICKY-01 |
+| **Description** | Click the button on the Dynamic ID page using a stable selector (not the random ID). |
+| **Preconditions** | Page is loaded. |
+| **Test Data** | Stable selector: `button.btn-primary` · Button text: `Button with Dynamic ID` |
+| **Expected Result** | Button is clicked successfully regardless of the current random ID value. |
+
+**Test Steps**
+1. Go to `http://uitestingplayground.com/dynamicid`.
+2. Locate the button using `button.btn-primary` (NOT its `id` attribute, which is a random GUID).
+3. Assert the button is visible and enabled.
+4. Click the button.
+5. Confirm no error occurs — the click completes successfully.
+
+---
+
+### TC-TRICKY-02
+
+| Field | Detail |
+| **Test Case ID** | TC-TRICKY-02 |
+| **Description** | Verify the button ID is different on every page reload, confirming the dynamic ID behavior. |
+| **Preconditions** | Page can be loaded twice. |
+| **Test Data** | Attribute: `id` on `button.btn-primary` |
+| **Expected Result** | The `id` value captured on the first load does not equal the `id` value on a fresh reload. |
+
+**Test Steps**
+1. Go to `http://uitestingplayground.com/dynamicid`.
+2. Read the `id` attribute of `button.btn-primary` — save as `id1`.
+3. Reload the page.
+4. Read the `id` attribute again — save as `id2`.
+5. Assert `id1 !== id2`.
+
+---
+
+### TC-TRICKY-03
+
+| Field | Detail |
+| **Test Case ID** | TC-TRICKY-03 |
+| **Description** | Scroll the Name input field into view on the Overlapped Element page and enter text. |
+| **Preconditions** | Page is loaded. The `#name` field is hidden inside a scrollable container. |
+| **Test Data** | Input value: `Carlos Automation` · Selector: `#name` |
+| **Expected Result** | Field is scrolled into view and accepts the typed text without error. |
+
+**Test Steps**
+1. Go to `http://uitestingplayground.com/overlapped`.
+2. Locate the `#name` input field — it is not yet visible due to the overlapping container.
+3. Scroll the element into view using `scrollIntoViewIfNeeded()`.
+4. Click the `#name` field to focus it.
+5. Type `Carlos Automation` into the field.
+6. Assert the field value equals `Carlos Automation`.
+
+---
+
+### TC-TRICKY-04
+
+| Field | Detail |
+| **Test Case ID** | TC-TRICKY-04 |
+| **Description** | Verify that directly clicking the Name field without scrolling fails or requires the scroll step. |
+| **Preconditions** | Page is loaded. No scrolling performed. |
+| **Test Data** | Selector: `#name` |
+| **Expected Result** | The field is not interactable until scrolled into view — confirms the scroll step is necessary. |
+
+**Test Steps**
+1. Go to `http://uitestingplayground.com/overlapped`.
+2. Without scrolling, attempt to click and type into `#name`.
+3. Observe that the action fails or the element is not actionable.
+4. Scroll the element into view.
+5. Confirm typing now works correctly.
+

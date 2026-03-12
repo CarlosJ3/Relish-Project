@@ -27,7 +27,7 @@ test("TC-SAPP-02 valid login shows welcome message with the username", async ({ 
 
   const status = page.locator(STATUS_LABEL);
   await expect(status).toBeVisible();
-  await expect(status).toHaveText(Welcome, ${TEST_USERNAME}!);
+  await expect(status).toHaveText(`Welcome, ${TEST_USERNAME}!`);
 });
 
 test("TC-SAPP-03 button text changes to Log Out after successful login", async ({ page }) => {
@@ -51,7 +51,7 @@ test("TC-SAPP-04 success message contains the exact username provided", async ({
   await page.locator(PASSWORD_INPUT).fill(TEST_PASSWORD);
   await page.locator(LOGIN_BUTTON).click();
 
-  await expect(page.locator(STATUS_LABEL)).toHaveText(Welcome, ${customName}!);
+  await expect(page.locator(STATUS_LABEL)).toHaveText(`Welcome, ${customName}!`);
 });
 
 test("TC-SAPP-05 wrong password shows error even with a valid username", async ({ page }) => {

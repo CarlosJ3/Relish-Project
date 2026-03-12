@@ -9,7 +9,6 @@ module.exports = defineConfig({
     headless: false,                    
     channel: "chrome",                  
     slowMo: 600,                        
-    baseURL: "http://uitestingplayground.com",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     viewport: { width: 1280, height: 800 },
